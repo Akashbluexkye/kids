@@ -39,6 +39,8 @@
     }
     body.dark-mode .section { background: #1e1e2e; border-color: #6c5ce7; }
     body.dark-mode .section-block { background: #252535; border-color: #6c5ce7; }
+    body.dark-mode .section-title { background: #252535; }
+    body.dark-mode .section-header { background: #1e1e2e; }
     body.dark-mode .nav-card { background: #252535; }
     body.dark-mode .flashcard, body.dark-mode .cvc-card { background: #2d2d3d; }
     .floating-star {
@@ -179,6 +181,15 @@
       flex-wrap: wrap;
       gap: 12px;
       margin-bottom: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: white;
+      padding-bottom: 12px;
+      margin-left: -16px;
+      margin-right: -16px;
+      padding-left: 16px;
+      padding-right: 16px;
     }
     .back-btn {
       display: inline-flex;
@@ -207,6 +218,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      position: sticky;
+      top: 56px;
+      z-index: 10;
+      background: #f8f9ff;
+      padding: 12px 0;
+      margin-left: -16px;
+      margin-right: -16px;
+      padding-left: 16px;
+      padding-right: 16px;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 2px 8px rgba(92,61,153,0.1);
     }
     .tap-hint {
       font-size: 14px;
