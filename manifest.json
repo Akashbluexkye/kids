@@ -1,0 +1,10 @@
+{
+  "name": "My Super Study Adventure",
+  "short_name": "Study Hub",
+  "description": "3rd Assessment Study Hub for kids",
+  "start_url": "exam-study-hub.html",
+  "display": "standalone",
+  "background_color": "#ff9a9e",
+  "theme_color": "#5c3d99",
+  "orientation": "portrait"
+}

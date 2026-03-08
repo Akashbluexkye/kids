@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#5c3d99">
+  <link rel="manifest" href="manifest.json">
+  <title>🌟 My Super Study Adventure! 🌟</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      background: linear-gradient(180deg, #ff9a9e 0%, #fecfef 50%, #a8edea 100%);
+      color: #333;
+      padding: 12px;
+      padding-left: max(12px, env(safe-area-inset-left));
+      padding-right: max(12px, env(safe-area-inset-right));
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
+      overflow-x: hidden;
+    }
+    @media (min-width: 600px) {
+      body { padding: 20px; }
+    }
+    .floating-star {
+      position: fixed;
+      font-size: 24px;
+      animation: float 4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .floating-star:nth-child(1) { left: 5%; top: 10%; animation-delay: 0s; }
+    .floating-star:nth-child(2) { right: 10%; top: 20%; animation-delay: 0.5s; }
+    .floating-star:nth-child(3) { left: 15%; bottom: 30%; animation-delay: 1s; }
+    .floating-star:nth-child(4) { right: 5%; bottom: 20%; animation-delay: 1.5s; }
+    .floating-star:nth-child(5) { left: 50%; top: 5%; animation-delay: 2s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(10deg); }
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+    .mascot {
+      text-align: center;
+      font-size: 64px;
+      animation: bounce 1s ease-in-out infinite;
+      margin-bottom: 8px;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      color: #5c3d99;
+      text-align: center;
+      font-size: clamp(26px, 6vw, 38px);
+      margin-bottom: 8px;
+      text-shadow: 3px 3px 0 rgba(255,255,255,0.8);
+    }
+    .subtitle {
+      text-align: center;
+      color: #7b5bb5;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 500px) {
+      .nav-grid { gap: 16px; }
+    }
+    .nav-card {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      min-height: 100px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #5c3d99, 0 12px 20px rgba(92,61,153,0.3);
+      transition: all 0.2s;
+      text-decoration: none;
+      color: inherit;
+      border: 4px solid #ffd93d;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(255,217,61,0.2), transparent);
+      pointer-events: none;
+    }
+    .nav-card:active {
+      transform: translateY(4px);
+      box-shadow: 0 4px 0 #5c3d99, 0 8px 15px rgba(92,61,153,0.3);
+    }
+    .nav-card .emoji { font-size: 44px; margin-bottom: 8px; display: block; }
+    .nav-card h3 { font-size: 18px; color: #5c3d99; margin-bottom: 4px; font-family: 'Fredoka One', cursive; }
+    .nav-card p { font-size: 12px; color: #666; }
+    @media (min-width: 500px) {
+      .nav-card { padding: 24px; min-height: 120px; }
+      .nav-card .emoji { font-size: 52px; }
+      .nav-card h3 { font-size: 20px; }
+      .nav-card p { font-size: 13px; }
+    }
+    .section {
+      display: none;
+      background: white;
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 8px 0 #5c3d99, 0 16px 32px rgba(92,61,153,0.2);
+      margin-bottom: 20px;
+      border: 4px solid #ffd93d;
+      animation: popIn 0.4s ease-out;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      max-height: calc(100vh - 24px);
+    }
+    @media (min-width: 600px) {
+      .section { padding: 24px; border-radius: 28px; }
+    }
+    .section-block {
+      background: #f8f9ff;
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 20px;
+      border-left: 6px solid #5c3d99;
+    }
+    .section-block:last-child { margin-bottom: 0; }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .section.active { display: block; }
+    #home.section { max-height: none; overflow: visible; }
+    .section h2 {
+      font-family: 'Fredoka One', cursive;
+      color: #5c3d99;
+      margin-bottom: 16px;
+      font-size: 24px;
+      text-align: center;
+    }
+    @media (min-width: 600px) {
+      .section h2 { font-size: 28px; margin-bottom: 20px; }
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ff6b9d;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      min-height: 44px;
+      box-shadow: 0 4px 0 #c44569;
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #c44569; }
+    .section-title {
+      font-size: 20px;
+      color: #5c3d99;
+      font-weight: 800;
+      margin: 24px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tap-hint {
+      font-size: 14px;
+      color: #7b5bb5;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .flashcard {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      color: white;
+      padding: 20px 24px;
+      border-radius: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
+      cursor: pointer;
+      margin: 6px;
+      min-height: 80px;
+      min-width: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid white;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+      transition: all 0.15s;
+      font-family: 'Fredoka One', cursive;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @media (min-width: 500px) {
+      .flashcard { padding: 24px 32px; font-size: 36px; min-height: 100px; }
+    }
+    .flashcard:active {
+      transform: scale(0.95);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+    }
+    .flashcard.speak { animation: wiggle 0.5s ease; }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+    .flashcard-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    @media (min-width: 500px) {
+      .flashcard-grid { gap: 14px; }
+    }
+    .cvc-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      padding: 12px 18px;
+      border-radius: 16px;
+      margin: 6px;
+      font-size: 22px;
+      font-weight: 800;
+      cursor: pointer;
+      border: 3px solid white;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+      transition: all 0.15s;
+      font-family: 'Fredoka One', cursive;
+      min-height: 70px;
+      min-width: 70px;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cvc-card .pic { font-size: 32px; margin-bottom: 2px; }
+    @media (min-width: 500px) {
+      .cvc-card { padding: 14px 22px; font-size: 26px; min-height: 80px; }
+      .cvc-card .pic { font-size: 38px; }
+    }
+    .cvc-card:active { transform: scale(0.95); }
+    .grammar-box {
+      background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+      border: 4px solid #2d8a3e;
+      border-radius: 24px;
+      padding: 24px;
+      margin: 16px 0;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    }
+    .grammar-box h4 { color: #1b5e20; margin-bottom: 12px; font-size: 22px; }
+    .grammar-box p { font-size: 20px; line-height: 1.5; }
+    .number-cell {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      border: 3px solid white;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .number-cell:active { transform: scale(0.9); }
+    .number-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 12px 0;
+      justify-content: center;
+    }
+    @media (min-width: 500px) {
+      .number-cell { width: 50px; height: 50px; font-size: 18px; }
+      .number-row { gap: 8px; }
+    }
+    .celebration {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      z-index: 100;
+      animation: celebrate 1s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes celebrate {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+      50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+    }
+    .list-item {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      padding: 16px 24px;
+      border-radius: 20px;
+      margin: 10px 0;
+      font-size: 20px;
+      font-weight: 700;
+      border: 3px solid white;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.1);
+    }
+    .syllabus-list { list-style: none; }
+    .syllabus-list li {
+      background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+      padding: 14px 20px;
+      border-radius: 16px;
+      margin: 8px 0;
+      font-size: 17px;
+      border-left: 6px solid #5c3d99;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-right: 8px;
+    }
+    .badge.oral { background: #00b894; color: white; }
+    .badge.written { background: #0984e3; color: white; }
+    .big-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+      color: white;
+      padding: 18px 24px;
+      border-radius: 20px;
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+      margin-top: 20px;
+      border: 4px solid white;
+      box-shadow: 0 6px 0 #c44569;
+      transition: all 0.2s;
+      min-height: 52px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @media (min-width: 500px) {
+      .big-link { padding: 20px 30px; font-size: 20px; }
+    }
+    .big-link:active { transform: translateY(3px); }
+    .cheer-msg {
+      text-align: center;
+      font-size: 24px;
+      color: #00b894;
+      font-weight: 800;
+      margin: 16px 0;
+      animation: pulse 1s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .num-name-card {
+      background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      border: 3px solid white;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .num-name-card:active { transform: scale(0.95); }
+    .num-name-card .n { font-size: 20px; display: block; margin-bottom: 2px; }
+    .number-names-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    @media (min-width: 500px) {
+      .number-names-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+      }
+      .num-name-card .n { font-size: 24px; }
+    }
+    .countdown-box {
+      background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+      border-radius: 28px;
+      padding: 32px;
+      text-align: center;
+      border: 4px solid white;
+      box-shadow: 0 8px 0 #c44569;
+      margin: 16px 0;
+    }
+    .countdown-num {
+      font-family: 'Fredoka One', cursive;
+      font-size: 64px;
+      color: white;
+      text-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+      margin: 12px 0;
+    }
+    @media (min-width: 500px) {
+      .countdown-num { font-size: 80px; margin: 16px 0; }
+    }
+    .countdown-btn {
+      background: white;
+      color: #e84393;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 20px;
+      font-size: 18px;
+      min-height: 48px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #ccc;
+      transition: all 0.15s;
+    }
+    .countdown-btn:active { transform: translateY(2px); }
+    @media (min-width: 500px) {
+      .countdown-btn { padding: 18px 40px; font-size: 22px; }
+    }
+    .before-after-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+    }
+    @media (max-width: 400px) {
+      .before-after-box {
+        grid-template-columns: 1fr;
+      }
+    }
+    .bab-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      border: 4px solid #5c3d99;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    }
+    .bab-card:active { transform: scale(0.97); }
+    .bab-card .label { font-size: 14px; color: #666; margin-bottom: 8px; }
+    .bab-card .val { font-size: 36px; font-weight: 800; color: #5c3d99; }
+    .bab-card.revealed { background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
+    .order-demo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 16px 0;
+    }
+    .order-num {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      border: 3px solid white;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    }
+    .order-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      border: 4px solid white;
+      border-radius: 20px;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      margin: 12px 0;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+      transition: all 0.15s;
+    }
+    .order-btn:active { transform: translateY(2px); }
+    .exam-start {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .exam-start-btn {
+      background: linear-gradient(135deg, #e84393 0%, #fd79a8 100%);
+      color: white;
+      border: 4px solid white;
+      padding: 24px 48px;
+      border-radius: 28px;
+      font-size: 28px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #c44569;
+      margin: 20px 0;
+      transition: all 0.2s;
+    }
+    .exam-start-btn:active { transform: translateY(4px); }
+    .exam-q {
+      font-size: 20px;
+      font-weight: 800;
+      color: #5c3d99;
+      margin: 20px 0 16px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    @media (min-width: 500px) {
+      .exam-q { font-size: 24px; }
+    }
+    .exam-options {
+      display: grid;
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .exam-opt {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      border: 4px solid white;
+      border-radius: 20px;
+      padding: 18px 20px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+      transition: all 0.15s;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @media (min-width: 500px) {
+      .exam-opt { padding: 22px; font-size: 20px; }
+    }
+    .exam-opt:active { transform: scale(0.98); }
+    .exam-opt.correct { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); border-color: #00b894; }
+    .exam-opt.wrong { background: linear-gradient(135deg, #ff7675 0%, #fab1a0 100%); border-color: #d63031; }
+    .exam-opt.disabled { pointer-events: none; opacity: 0.8; }
+    .exam-progress {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #7b5bb5;
+      margin-bottom: 16px;
+    }
+    .exam-result {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .exam-result .score {
+      font-size: 72px;
+      font-weight: 800;
+      color: #5c3d99;
+      margin: 20px 0;
+    }
+    .exam-result .msg {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 16px 0;
+    }
+    .exam-listen-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      color: white;
+      border: 4px solid white;
+      border-radius: 20px;
+      padding: 16px 24px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      margin: 12px auto 20px;
+      width: 100%;
+      max-width: 320px;
+      min-height: 52px;
+      box-shadow: 0 6px 0 #0652dd;
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @media (min-width: 500px) {
+      .exam-listen-btn { font-size: 20px; padding: 18px 28px; }
+    }
+    .exam-listen-btn:active { transform: translateY(3px); }
+    .exam-listen-btn .icon { font-size: 36px; }
+    .rhyme-pair {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+    .rhyme-card {
+      background: linear-gradient(135deg, #fd79a8 0%, #a29bfe 100%);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 20px;
+      font-size: 24px;
+      font-weight: 800;
+      cursor: pointer;
+      border: 3px solid white;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+      transition: all 0.15s;
+      font-family: 'Fredoka One', cursive;
+    }
+    .rhyme-card:active { transform: scale(0.95); }
+    .rhyme-card .heart { font-size: 20px; margin: 0 4px; }
+    .sentence-card {
+      background: linear-gradient(135deg, #81ecec 0%, #74b9ff 100%);
+      color: #2d3436;
+      padding: 20px 24px;
+      border-radius: 20px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 3px solid white;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+      margin: 12px 0;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .sentence-card:active { transform: scale(0.98); }
+    .sentence-card .pic { font-size: 36px; margin-bottom: 8px; display: block; }
+    .sound-game {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 12px 0;
+    }
+    .sound-opt {
+      background: white;
+      border: 4px solid #5c3d99;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 22px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+      min-width: 80px;
+      text-align: center;
+    }
+    .sound-opt:active { transform: scale(0.95); }
+    .sound-opt.correct { background: #00b894; border-color: #00b894; color: white; }
+    .alphabet-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      padding: 12px 16px;
+      border-radius: 16px;
+      margin: 6px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      border: 3px solid white;
+      min-width: 64px;
+      transition: all 0.15s;
+    }
+    .alphabet-card:active { transform: scale(0.95); }
+    .alphabet-card .letter { font-size: 28px; color: #5c3d99; margin-bottom: 4px; }
+    .alphabet-card .obj { font-size: 14px; color: #2d3436; }
+    .count-objects {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      padding: 20px;
+      background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+      border-radius: 20px;
+      margin: 12px 0;
+      cursor: pointer;
+      border: 4px solid white;
+      transition: all 0.15s;
+    }
+    .count-objects:active { transform: scale(0.98); }
+    .count-objects .obj { font-size: 36px; }
+    .count-objects .ans { font-size: 24px; font-weight: 800; color: #5c3d99; margin-top: 12px; width: 100%; text-align: center; }
+    .skip-count {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 12px 0;
+    }
+    .skip-num {
+      background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      color: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      border: 3px solid white;
+      transition: all 0.15s;
+    }
+    .skip-num:active { transform: scale(0.95); }
+    .number-bond {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      border-radius: 20px;
+      padding: 20px;
+      margin: 12px 0;
+      text-align: center;
+      border: 4px solid white;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 800;
+      transition: all 0.15s;
+    }
+    .number-bond:active { transform: scale(0.98); }
+    .add-game {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 12px 0;
+    }
+    .add-opt {
+      background: white;
+      border: 4px solid #5c3d99;
+      border-radius: 20px;
+      padding: 16px 24px;
+      font-size: 24px;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 70px;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .add-opt:active { transform: scale(0.95); }
+    .add-opt.correct { background: #00b894; border-color: #00b894; color: white; }
+    .exam-choice-btn {
+      display: block;
+      width: 100%;
+      max-width: 320px;
+      margin: 16px auto;
+      padding: 24px;
+      border-radius: 24px;
+      font-size: 22px;
+      font-weight: 800;
+      cursor: pointer;
+      border: 4px solid white;
+      text-align: center;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .exam-choice-btn.words { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); box-shadow: 0 6px 0 #e84393; }
+    .exam-choice-btn.numbers { background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); box-shadow: 0 6px 0 #0652dd; }
+    .exam-choice-btn:active { transform: translateY(3px); }
+  </style>
+</head>
+<body>
+  <div class="floating-star">⭐</div>
+  <div class="floating-star">🌟</div>
+  <div class="floating-star">✨</div>
+  <div class="floating-star">💫</div>
+  <div class="floating-star">⭐</div>
+
+  <div class="container">
+    <div id="home" class="section active">
+      <div class="mascot">🦉</div>
+      <h1>My Super Study Adventure!</h1>
+      <p class="subtitle">Tap any door to start learning! 🚀</p>
+      <p style="text-align: center; font-size: 13px; color: #7b5bb5; margin-bottom: 16px;">📱 On phone? Add to Home Screen for app-like use!</p>
+      <div class="nav-grid">
+        <a href="#" class="nav-card" data-section="literacy">
+          <span class="emoji">📖</span>
+          <h3>Words & Reading</h3>
+          <p>Tap words to hear them! 🎧</p>
+        </a>
+        <a href="#" class="nav-card" data-section="numeracy">
+          <span class="emoji">🔢</span>
+          <h3>Numbers!</h3>
+          <p>Count & learn numbers! 🎯</p>
+        </a>
+        <a href="#" class="nav-card" data-section="gk">
+          <span class="emoji">🌍</span>
+          <h3>Fun Facts</h3>
+          <p>Days, animals & more! 🐠</p>
+        </a>
+        <a href="#" class="nav-card" data-section="syllabus">
+          <span class="emoji">📋</span>
+          <h3>My Checklist</h3>
+          <p>What to study for exam! ✅</p>
+        </a>
+        <a href="#" class="nav-card" data-section="exam">
+          <span class="emoji">📝</span>
+          <h3>Practice Exam!</h3>
+          <p>Test yourself! 🎯</p>
+        </a>
+      </div>
+    </div>
+
+    <div id="literacy" class="section">
+      <div class="section-header">
+        <button class="back-btn" onclick="showSection('home')">← Back</button>
+      </div>
+      <h2>📖 Words & Reading</h2>
+      <p class="cheer-msg">Tap any word to hear it! 👆</p>
+
+      <div class="section-block">
+        <div class="section-title">🌟 Sight Words – Tap to hear!</div>
+        <div class="tap-hint">Tap each card – it will say the word for you!</div>
+        <div class="flashcard-grid" id="sightWords">
+          <div class="flashcard" data-word="Put" onclick="speakCard(this)">Put</div>
+          <div class="flashcard" data-word="Where" onclick="speakCard(this)">Where</div>
+          <div class="flashcard" data-word="What" onclick="speakCard(this)">What</div>
+          <div class="flashcard" data-word="Jump" onclick="speakCard(this)">Jump</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🐱 CVC Words – Tap to hear!</div>
+      <p class="tap-hint">CVC = Consonant + Vowel + Consonant (like c-a-t). Tap to hear!</p>
+      <p style="margin-bottom: 12px; font-weight: 700; color: #5c3d99;">📌 With 'a':</p>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px;">
+        <div class="cvc-card" data-word="cat"><span class="pic">🐱</span>cat</div>
+        <div class="cvc-card" data-word="bat"><span class="pic">🦇</span>bat</div>
+        <div class="cvc-card" data-word="mat"><span class="pic">🪑</span>mat</div>
+        <div class="cvc-card" data-word="hat"><span class="pic">🎩</span>hat</div>
+        <div class="cvc-card" data-word="rat"><span class="pic">🐀</span>rat</div>
+        <div class="cvc-card" data-word="sat"><span class="pic">🪑</span>sat</div>
+      </div>
+      <p style="margin-bottom: 12px; font-weight: 700; color: #5c3d99;">📌 With 'e':</p>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px;">
+        <div class="cvc-card" data-word="bed"><span class="pic">🛏️</span>bed</div>
+        <div class="cvc-card" data-word="red"><span class="pic">🔴</span>red</div>
+        <div class="cvc-card" data-word="leg"><span class="pic">🦵</span>leg</div>
+        <div class="cvc-card" data-word="peg"><span class="pic">📌</span>peg</div>
+        <div class="cvc-card" data-word="hen"><span class="pic">🐔</span>hen</div>
+        <div class="cvc-card" data-word="pen"><span class="pic">🖊️</span>pen</div>
+      </div>
+      <p style="margin-bottom: 12px; font-weight: 700; color: #5c3d99;">📌 With 'i':</p>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px;">
+        <div class="cvc-card" data-word="sit"><span class="pic">🪑</span>sit</div>
+        <div class="cvc-card" data-word="bit"><span class="pic">🔢</span>bit</div>
+        <div class="cvc-card" data-word="pin"><span class="pic">📌</span>pin</div>
+        <div class="cvc-card" data-word="win"><span class="pic">🏆</span>win</div>
+        <div class="cvc-card" data-word="pig"><span class="pic">🐷</span>pig</div>
+        <div class="cvc-card" data-word="dig"><span class="pic">⛏️</span>dig</div>
+      </div>
+      <p style="margin-bottom: 12px; font-weight: 700; color: #5c3d99;">📌 With 'o':</p>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px;">
+        <div class="cvc-card" data-word="dog"><span class="pic">🐕</span>dog</div>
+        <div class="cvc-card" data-word="log"><span class="pic">🪵</span>log</div>
+        <div class="cvc-card" data-word="hot"><span class="pic">🔥</span>hot</div>
+        <div class="cvc-card" data-word="pot"><span class="pic">🍲</span>pot</div>
+        <div class="cvc-card" data-word="box"><span class="pic">📦</span>box</div>
+        <div class="cvc-card" data-word="fox"><span class="pic">🦊</span>fox</div>
+      </div>
+      <p style="margin-bottom: 12px; font-weight: 700; color: #5c3d99;">📌 With 'u':</p>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
+        <div class="cvc-card" data-word="cup"><span class="pic">🥤</span>cup</div>
+        <div class="cvc-card" data-word="bus"><span class="pic">🚌</span>bus</div>
+        <div class="cvc-card" data-word="sun"><span class="pic">☀️</span>sun</div>
+        <div class="cvc-card" data-word="run"><span class="pic">🏃</span>run</div>
+        <div class="cvc-card" data-word="bug"><span class="pic">🐛</span>bug</div>
+        <div class="cvc-card" data-word="mug"><span class="pic">☕</span>mug</div>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">📝 This & That</div>
+      <div class="grammar-box">
+        <h4>👆 This = close to me! (near)</h4>
+        <p>"<strong>This</strong> is my toy!" – point to something near you</p>
+        <p>"<strong>This</strong> is my book." – the book is in your hand</p>
+      </div>
+      <div class="grammar-box">
+        <h4>👉 That = far away! (far)</h4>
+        <p>"<strong>That</strong> is a tree!" – point to something far</p>
+        <p>"<strong>That</strong> is a bird." – the bird is on the roof</p>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">📦 in, on, under</div>
+      <div class="grammar-box">
+        <h4>🔵 IN = inside something</h4>
+        <p>The ball is <strong>in</strong> the box. 📦</p>
+        <p>The book is <strong>in</strong> the bag. 🎒</p>
+      </div>
+      <div class="grammar-box">
+        <h4>🟢 ON = on top of something</h4>
+        <p>The book is <strong>on</strong> the table. 📚</p>
+        <p>The cat is <strong>on</strong> the mat. 🐱</p>
+      </div>
+      <div class="grammar-box">
+        <h4>🟡 UNDER = below something</h4>
+        <p>The ball is <strong>under</strong> the chair. 🪑</p>
+        <p>The dog is <strong>under</strong> the table. 🐕</p>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🎵 Rhyming Words – Tap to hear!</div>
+        <p class="tap-hint">Words that sound the same at the end! Tap each pair!</p>
+        <div class="rhyme-pair">
+          <div class="rhyme-card" onclick="speakPair('cat','hat')">🐱 cat <span class="heart">❤️</span> 🎩 hat</div>
+        </div>
+        <div class="rhyme-pair">
+          <div class="rhyme-card" onclick="speakPair('dog','log')">🐕 dog <span class="heart">❤️</span> 🪵 log</div>
+        </div>
+        <div class="rhyme-pair">
+          <div class="rhyme-card" onclick="speakPair('sun','run')">☀️ sun <span class="heart">❤️</span> 🏃 run</div>
+        </div>
+        <div class="rhyme-pair">
+          <div class="rhyme-card" onclick="speakPair('bed','red')">🛏️ bed <span class="heart">❤️</span> 🔴 red</div>
+        </div>
+        <div class="rhyme-pair">
+          <div class="rhyme-card" onclick="speakPair('cat','bat')">🐱 cat <span class="heart">❤️</span> 🦇 bat</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">📝 Read Small Sentences – Tap to hear!</div>
+        <p class="tap-hint">Tap each sentence – it will read for you!</p>
+        <div class="sentence-card" data-sentence="The cat sat on the mat" onclick="speakSentence(this)">
+          <span class="pic">🐱🪑</span>The cat sat on the mat.
+        </div>
+        <div class="sentence-card" data-sentence="The dog is on the log" onclick="speakSentence(this)">
+          <span class="pic">🐕🪵</span>The dog is on the log.
+        </div>
+        <div class="sentence-card" data-sentence="I have a red bed" onclick="speakSentence(this)">
+          <span class="pic">🛏️🔴</span>I have a red bed.
+        </div>
+        <div class="sentence-card" data-sentence="The sun is hot" onclick="speakSentence(this)">
+          <span class="pic">☀️🔥</span>The sun is hot.
+        </div>
+        <div class="sentence-card" data-sentence="Put the cup on the mat" onclick="speakSentence(this)">
+          <span class="pic">🥤🪑</span>Put the cup on the mat.
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🔤 First Sound – What starts with...?</div>
+        <p class="tap-hint">Tap the word that starts with the right letter!</p>
+        <p style="font-size: 18px; font-weight: 800; margin: 12px 0; color: #5c3d99;">Starts with <strong>B</strong>?</p>
+        <div class="sound-game">
+          <div class="sound-opt" data-word="ball" data-correct="1" onclick="checkSound(this)">⚽ ball</div>
+          <div class="sound-opt" data-word="cat" data-correct="0" onclick="checkSound(this)">🐱 cat</div>
+          <div class="sound-opt" data-word="dog" data-correct="0" onclick="checkSound(this)">🐕 dog</div>
+        </div>
+        <p style="font-size: 18px; font-weight: 800; margin: 16px 0 8px; color: #5c3d99;">Starts with <strong>C</strong>?</p>
+        <div class="sound-game">
+          <div class="sound-opt" data-word="dog" data-correct="0" onclick="checkSound(this)">🐕 dog</div>
+          <div class="sound-opt" data-word="cat" data-correct="1" onclick="checkSound(this)">🐱 cat</div>
+          <div class="sound-opt" data-word="bed" data-correct="0" onclick="checkSound(this)">🛏️ bed</div>
+        </div>
+        <p style="font-size: 18px; font-weight: 800; margin: 16px 0 8px; color: #5c3d99;">Starts with <strong>D</strong>?</p>
+        <div class="sound-game">
+          <div class="sound-opt" data-word="dog" data-correct="1" onclick="checkSound(this)">🐕 dog</div>
+          <div class="sound-opt" data-word="cat" data-correct="0" onclick="checkSound(this)">🐱 cat</div>
+          <div class="sound-opt" data-word="hat" data-correct="0" onclick="checkSound(this)">🎩 hat</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">👨‍👩‍👧 Word Families – Same ending!</div>
+        <p class="tap-hint">-at family: cat, bat, hat, mat, rat!</p>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px;">
+          <div class="cvc-card" data-word="cat"><span class="pic">🐱</span>cat</div>
+          <div class="cvc-card" data-word="bat"><span class="pic">🦇</span>bat</div>
+          <div class="cvc-card" data-word="hat"><span class="pic">🎩</span>hat</div>
+          <div class="cvc-card" data-word="mat"><span class="pic">🪑</span>mat</div>
+          <div class="cvc-card" data-word="rat"><span class="pic">🐀</span>rat</div>
+        </div>
+        <p class="tap-hint">-og family: dog, log, fog!</p>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
+          <div class="cvc-card" data-word="dog"><span class="pic">🐕</span>dog</div>
+          <div class="cvc-card" data-word="log"><span class="pic">🪵</span>log</div>
+          <div class="cvc-card" data-word="fog"><span class="pic">🌫️</span>fog</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🔤 Alphabet A to Z – Tap to hear!</div>
+        <p class="tap-hint">A for Apple! Tap each letter!</p>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;">
+          <div class="alphabet-card" data-letter="A" data-word="Apple" onclick="speakLetter(this)"><span class="letter">A</span><span class="obj">🍎</span></div>
+          <div class="alphabet-card" data-letter="B" data-word="Ball" onclick="speakLetter(this)"><span class="letter">B</span><span class="obj">⚽</span></div>
+          <div class="alphabet-card" data-letter="C" data-word="Cat" onclick="speakLetter(this)"><span class="letter">C</span><span class="obj">🐱</span></div>
+          <div class="alphabet-card" data-letter="D" data-word="Dog" onclick="speakLetter(this)"><span class="letter">D</span><span class="obj">🐕</span></div>
+          <div class="alphabet-card" data-letter="E" data-word="Egg" onclick="speakLetter(this)"><span class="letter">E</span><span class="obj">🥚</span></div>
+          <div class="alphabet-card" data-letter="F" data-word="Fish" onclick="speakLetter(this)"><span class="letter">F</span><span class="obj">🐟</span></div>
+          <div class="alphabet-card" data-letter="G" data-word="Goat" onclick="speakLetter(this)"><span class="letter">G</span><span class="obj">🐐</span></div>
+          <div class="alphabet-card" data-letter="H" data-word="Hat" onclick="speakLetter(this)"><span class="letter">H</span><span class="obj">🎩</span></div>
+          <div class="alphabet-card" data-letter="I" data-word="Ice" onclick="speakLetter(this)"><span class="letter">I</span><span class="obj">🧊</span></div>
+          <div class="alphabet-card" data-letter="J" data-word="Jam" onclick="speakLetter(this)"><span class="letter">J</span><span class="obj">🍓</span></div>
+          <div class="alphabet-card" data-letter="K" data-word="Kite" onclick="speakLetter(this)"><span class="letter">K</span><span class="obj">🪁</span></div>
+          <div class="alphabet-card" data-letter="L" data-word="Lion" onclick="speakLetter(this)"><span class="letter">L</span><span class="obj">🦁</span></div>
+          <div class="alphabet-card" data-letter="M" data-word="Moon" onclick="speakLetter(this)"><span class="letter">M</span><span class="obj">🌙</span></div>
+          <div class="alphabet-card" data-letter="N" data-word="Nest" onclick="speakLetter(this)"><span class="letter">N</span><span class="obj">🐦</span></div>
+          <div class="alphabet-card" data-letter="O" data-word="Orange" onclick="speakLetter(this)"><span class="letter">O</span><span class="obj">🍊</span></div>
+          <div class="alphabet-card" data-letter="P" data-word="Pig" onclick="speakLetter(this)"><span class="letter">P</span><span class="obj">🐷</span></div>
+          <div class="alphabet-card" data-letter="Q" data-word="Queen" onclick="speakLetter(this)"><span class="letter">Q</span><span class="obj">👑</span></div>
+          <div class="alphabet-card" data-letter="R" data-word="Rainbow" onclick="speakLetter(this)"><span class="letter">R</span><span class="obj">🌈</span></div>
+          <div class="alphabet-card" data-letter="S" data-word="Sun" onclick="speakLetter(this)"><span class="letter">S</span><span class="obj">☀️</span></div>
+          <div class="alphabet-card" data-letter="T" data-word="Tree" onclick="speakLetter(this)"><span class="letter">T</span><span class="obj">🌳</span></div>
+          <div class="alphabet-card" data-letter="U" data-word="Umbrella" onclick="speakLetter(this)"><span class="letter">U</span><span class="obj">☂️</span></div>
+          <div class="alphabet-card" data-letter="V" data-word="Van" onclick="speakLetter(this)"><span class="letter">V</span><span class="obj">🚐</span></div>
+          <div class="alphabet-card" data-letter="W" data-word="Water" onclick="speakLetter(this)"><span class="letter">W</span><span class="obj">💧</span></div>
+          <div class="alphabet-card" data-letter="X" data-word="X-ray" onclick="speakLetter(this)"><span class="letter">X</span><span class="obj">🩻</span></div>
+          <div class="alphabet-card" data-letter="Y" data-word="Yoyo" onclick="speakLetter(this)"><span class="letter">Y</span><span class="obj">🪀</span></div>
+          <div class="alphabet-card" data-letter="Z" data-word="Zebra" onclick="speakLetter(this)"><span class="letter">Z</span><span class="obj">🦓</span></div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🎵 Rhymes to learn</div>
+        <ul class="syllabus-list">
+          <li>Eight big finger</li>
+          <li>To market, to market</li>
+          <li>Oh look at moon</li>
+        </ul>
+        <div class="section-title">📚 Stories</div>
+        <ul class="syllabus-list">
+          <li>Four friends</li>
+          <li>Too many banana</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="numeracy" class="section">
+      <div class="section-header">
+        <button class="back-btn" onclick="showSection('home')">← Back</button>
+      </div>
+      <h2>🔢 Numbers!</h2>
+      <p class="cheer-msg">Tap any number to hear it! 👆</p>
+
+      <div class="section-block">
+        <div class="section-title">🔢 Numbers 51 to 120 – Tap to hear!</div>
+        <div class="number-row" id="numbers51to120"></div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">📝 Number Names (1 to 40) – Tap to hear!</div>
+        <div class="tap-hint">Tap any card – it will say the number name! 🎧</div>
+        <div id="numberNamesGrid" class="number-names-grid"></div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">⬇️ Count backwards! 50 → 0</div>
+      <p class="tap-hint">Tap the button – count down together! 🚀</p>
+      <div class="countdown-box">
+        <div class="countdown-num" id="countdownNum">50</div>
+        <button class="countdown-btn" id="countdownBtn" onclick="nextCountdown()">Tap to count! 👇</button>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🔢 Before, After, Between – Tap to see!</div>
+      <p class="tap-hint">Pick a number, then tap Before 👈 / Between ✨ / After 👉!</p>
+      <p style="text-align: center; font-size: 18px; font-weight: 800; margin-bottom: 8px;">Number: <span id="babCurrent">15</span></p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; justify-content: center;">
+        <button class="order-btn" onclick="setBabNum(10)">10</button>
+        <button class="order-btn" onclick="setBabNum(15)">15</button>
+        <button class="order-btn" onclick="setBabNum(25)">25</button>
+        <button class="order-btn" onclick="setBabNum(40)">40</button>
+      </div>
+      <div class="before-after-box">
+        <div class="bab-card" id="babBefore" onclick="revealBab('before')">
+          <div class="label">Before 👈</div>
+          <div class="val" id="babBeforeVal">?</div>
+        </div>
+        <div class="bab-card" id="babBetween" onclick="revealBab('between')">
+          <div class="label">Between ✨</div>
+          <div class="val" id="babBetweenVal">?</div>
+        </div>
+        <div class="bab-card" id="babAfter" onclick="revealBab('after')">
+          <div class="label">After 👉</div>
+          <div class="val" id="babAfterVal">?</div>
+        </div>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">👀 Count the Objects – Tap to count!</div>
+        <p class="tap-hint">How many? Tap to hear the answer!</p>
+        <div class="count-objects" data-count="3" onclick="speakCount(this)">
+          <span class="obj">🍎</span><span class="obj">🍎</span><span class="obj">🍎</span>
+          <div class="ans">= 3 apples</div>
+        </div>
+        <div class="count-objects" data-count="5" onclick="speakCount(this)">
+          <span class="obj">⭐</span><span class="obj">⭐</span><span class="obj">⭐</span><span class="obj">⭐</span><span class="obj">⭐</span>
+          <div class="ans">= 5 stars</div>
+        </div>
+        <div class="count-objects" data-count="4" onclick="speakCount(this)">
+          <span class="obj">🐱</span><span class="obj">🐱</span><span class="obj">🐱</span><span class="obj">🐱</span>
+          <div class="ans">= 4 cats</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">⏩ Skip Counting – Tap to hear!</div>
+        <p class="tap-hint">Count by 2s: 2, 4, 6, 8...</p>
+        <div class="skip-count" id="skipBy2"></div>
+        <p class="tap-hint" style="margin-top: 16px;">Count by 5s: 5, 10, 15, 20...</p>
+        <div class="skip-count" id="skipBy5"></div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🔗 Number Bonds – Tap to see!</div>
+        <p class="tap-hint">5 = 2 + 3! Tap each card!</p>
+        <div class="number-bond" onclick="speakBond('5','2','3')">5 = 2 + 3 ✨</div>
+        <div class="number-bond" onclick="speakBond('6','3','3')">6 = 3 + 3 ✨</div>
+        <div class="number-bond" onclick="speakBond('10','4','6')">10 = 4 + 6 ✨</div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">➕ Addition Game – Tap the answer!</div>
+        <p class="tap-hint">What is 3 + 2?</p>
+        <div class="add-game">
+          <div class="add-opt" data-correct="0" onclick="checkAdd(this, 5)">4</div>
+          <div class="add-opt" data-correct="1" onclick="checkAdd(this, 5)">5</div>
+          <div class="add-opt" data-correct="0" onclick="checkAdd(this, 5)">6</div>
+        </div>
+        <p class="tap-hint" style="margin-top: 16px;">What is 4 + 3?</p>
+        <div class="add-game">
+          <div class="add-opt" data-correct="0" onclick="checkAdd(this, 7)">6</div>
+          <div class="add-opt" data-correct="1" onclick="checkAdd(this, 7)">7</div>
+          <div class="add-opt" data-correct="0" onclick="checkAdd(this, 7)">8</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">➕ Addition – Tap to practice!</div>
+      <p class="tap-hint">2 + 3 = 5 • 4 + 1 = 5 • 3 + 2 = 5</p>
+      <div class="grammar-box">
+        <p>1+1=2 • 2+2=4 • 3+2=5 • 4+3=7 • 5+4=9</p>
+        <p>2+3=5 • 1+4=5 • 3+3=6 • 2+5=7 • 4+4=8</p>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">📈 Ascending – small to big!</div>
+      <p class="tap-hint">Tap to see: 1, 2, 3, 4, 5... 📈</p>
+        <button class="order-btn" onclick="showOrder('asc')">Show Ascending 1→20</button>
+        <div class="order-demo" id="orderAsc"></div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">📉 Descending – big to small!</div>
+      <p class="tap-hint">Tap to see: 20, 19, 18, 17... 📉</p>
+        <button class="order-btn" onclick="showOrder('desc')">Show Descending 20→1</button>
+        <div class="order-demo" id="orderDesc"></div>
+      </div>
+
+      <a href="number-slides.html" class="big-link">🎮 Play Number Slides! 1 to 120!</a>
+    </div>
+
+    <div id="gk" class="section">
+      <div class="section-header">
+        <button class="back-btn" onclick="showSection('home')">← Back</button>
+      </div>
+      <h2>🌍 Fun Facts!</h2>
+      <p class="cheer-msg">Tap any card to hear it! 👆</p>
+
+      <div class="section-block">
+        <div class="section-title">📅 Days of the Week – with spelling!</div>
+      <p class="tap-hint">Tap to hear and learn spelling</p>
+      <div class="flashcard-grid">
+        <div class="flashcard" style="font-size: 22px; padding: 20px;" data-word="Sunday" onclick="speakCard(this)">Sunday</div>
+        <div class="flashcard" style="font-size: 22px; padding: 20px;" data-word="Monday" onclick="speakCard(this)">Monday</div>
+        <div class="flashcard" style="font-size: 22px; padding: 20px;" data-word="Tuesday" onclick="speakCard(this)">Tuesday</div>
+        <div class="flashcard" style="font-size: 22px; padding: 20px;" data-word="Wednesday" onclick="speakCard(this)">Wednesday</div>
+        <div class="flashcard" style="font-size: 22px; padding: 20px;" data-word="Thursday" onclick="speakCard(this)">Thursday</div>
+        <div class="flashcard" style="font-size: 22px; padding: 20px;" data-word="Friday" onclick="speakCard(this)">Friday</div>
+        <div class="flashcard" style="font-size: 22px; padding: 20px;" data-word="Saturday" onclick="speakCard(this)">Saturday</div>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">📆 Months – Exam focus: Dec, Jan, Feb!</div>
+      <div class="flashcard-grid">
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="January" onclick="speakCard(this)">January</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="February" onclick="speakCard(this)">February</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="March" onclick="speakCard(this)">March</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="April" onclick="speakCard(this)">April</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="May" onclick="speakCard(this)">May</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="June" onclick="speakCard(this)">June</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="July" onclick="speakCard(this)">July</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="August" onclick="speakCard(this)">August</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="September" onclick="speakCard(this)">September</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="October" onclick="speakCard(this)">October</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="November" onclick="speakCard(this)">November</div>
+        <div class="flashcard" style="font-size: 18px; padding: 16px;" data-word="December" onclick="speakCard(this)">December</div>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🐠 Water Animals – Tap to hear!</div>
+      <p class="tap-hint">Animals that live in water</p>
+      <div class="flashcard-grid">
+        <div class="flashcard" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); font-size: 22px;" data-word="Fish" onclick="speakCard(this)">🐟 Fish</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); font-size: 22px;" data-word="Dolphin" onclick="speakCard(this)">🐬 Dolphin</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); font-size: 22px;" data-word="Whale" onclick="speakCard(this)">🐋 Whale</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); font-size: 22px;" data-word="Octopus" onclick="speakCard(this)">🐙 Octopus</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); font-size: 22px;" data-word="Shark" onclick="speakCard(this)">🦈 Shark</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); font-size: 22px;" data-word="Turtle" onclick="speakCard(this)">🐢 Turtle</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); font-size: 22px;" data-word="Crab" onclick="speakCard(this)">🦀 Crab</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); font-size: 22px;" data-word="Frog" onclick="speakCard(this)">🐸 Frog</div>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🦋 Insects – Tap to hear!</div>
+      <p class="tap-hint">Small animals with 6 legs</p>
+      <div class="flashcard-grid">
+        <div class="flashcard" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); font-size: 22px;" data-word="Butterfly" onclick="speakCard(this)">🦋 Butterfly</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); font-size: 22px;" data-word="Bee" onclick="speakCard(this)">🐝 Bee</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); font-size: 22px;" data-word="Ant" onclick="speakCard(this)">🐜 Ant</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); font-size: 22px;" data-word="Ladybug" onclick="speakCard(this)">🐞 Ladybug</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); font-size: 22px;" data-word="Mosquito" onclick="speakCard(this)">🦟 Mosquito</div>
+        <div class="flashcard" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); font-size: 22px;" data-word="Cricket" onclick="speakCard(this)">🦗 Cricket</div>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🎉 Festivals – Tap to hear!</div>
+      <div class="flashcard-grid">
+        <div class="flashcard" style="font-size: 20px;" data-word="Diwali" onclick="speakCard(this)">🪔 Diwali</div>
+        <div class="flashcard" style="font-size: 20px;" data-word="Holi" onclick="speakCard(this)">🎨 Holi</div>
+        <div class="flashcard" style="font-size: 20px;" data-word="Christmas" onclick="speakCard(this)">🎄 Christmas</div>
+        <div class="flashcard" style="font-size: 20px;" data-word="Eid" onclick="speakCard(this)">🌙 Eid</div>
+        <div class="flashcard" style="font-size: 20px;" data-word="Dussehra" onclick="speakCard(this)">🦸 Dussehra</div>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🌙 Moon Phases</div>
+        <p style="font-size: 18px;">New Moon → Waxing → Full Moon → Waning → New Moon (goes round!)</p>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🥗 Healthy vs Junk Food</div>
+      <div class="grammar-box">
+        <h4>✅ Healthy – makes you strong!</h4>
+        <p>Fruits 🍎🍌, Vegetables 🥕🥦, Milk 🥛, Roti, Rice, Dal</p>
+      </div>
+      <div class="grammar-box">
+        <h4>❌ Junk – eat less!</h4>
+        <p>Chips, Pizza, Burgers, Candy, Cold drinks</p>
+      </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title">🐦 Parts of a Bird – Tap to hear!</div>
+      <div class="flashcard-grid">
+        <div class="flashcard" style="font-size: 20px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);" data-word="Beak" onclick="speakCard(this)">🐤 Beak</div>
+        <div class="flashcard" style="font-size: 20px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);" data-word="Wings" onclick="speakCard(this)">🦅 Wings</div>
+        <div class="flashcard" style="font-size: 20px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);" data-word="Feathers" onclick="speakCard(this)">🪶 Feathers</div>
+        <div class="flashcard" style="font-size: 20px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);" data-word="Claws" onclick="speakCard(this)">🦶 Claws</div>
+        <div class="flashcard" style="font-size: 20px; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);" data-word="Tail" onclick="speakCard(this)">🐦 Tail</div>
+      </div>
+      </div>
+    </div>
+
+    <div id="syllabus" class="section">
+      <div class="section-header">
+        <button class="back-btn" onclick="showSection('home')">← Back</button>
+      </div>
+      <h2>📋 My Exam Checklist!</h2>
+      <p class="cheer-msg">You can do it! 💪</p>
+
+      <h3 style="margin: 20px 0 10px; color: #5c3d99;">📖 Words & Reading</h3>
+      <ul class="syllabus-list">
+        <li><span class="badge oral">Oral</span> CVC words, Rhyming words</li>
+        <li><span class="badge oral">Oral</span> Rhymes: Eight big finger / To market / Oh look at moon</li>
+        <li><span class="badge oral">Oral</span> Stories: Four friends / Too many banana</li>
+        <li><span class="badge written">Written</span> Alphabet Aa–Zz, Sight words (Put, Where, What, Jump)</li>
+        <li><span class="badge written">Written</span> Grammar: This/That, in/on/under</li>
+      </ul>
+
+      <h3 style="margin: 20px 0 10px; color: #5c3d99;">🔢 Numbers</h3>
+      <ul class="syllabus-list">
+        <li><span class="badge oral">Oral</span> Numbers 51–120, Number names 1–40, Backward 50→0</li>
+        <li><span class="badge written">Written</span> Before/After/Between, Ascending/Descending, Addition</li>
+      </ul>
+
+      <h3 style="margin: 20px 0 10px; color: #5c3d99;">📝 Hindi</h3>
+      <ul class="syllabus-list">
+        <li><span class="badge oral">Oral</span> अ से ज्ञ, दो अक्षर के शब्द, पक्षी, त्योहार</li>
+        <li><span class="badge oral">Oral</span> कविता & कहानी</li>
+      </ul>
+
+      <h3 style="margin: 20px 0 10px; color: #5c3d99;">🌍 General Knowledge</h3>
+      <ul class="syllabus-list">
+        <li>Days, Months, Water animals, Insects, Festivals</li>
+        <li>Moon phases, Healthy/Junk food, Bird body parts</li>
+      </ul>
+
+      <h3 style="margin: 20px 0 10px; color: #5c3d99;">🎨 Drawing</h3>
+      <p style="font-size: 20px;">Flower vase 🌸 OR Teddy bear 🧸 (any one)</p>
+    </div>
+
+    <div id="exam" class="section">
+      <div class="section-header">
+        <button class="back-btn" onclick="showSection('home')">← Back</button>
+      </div>
+      <div id="examStart" class="exam-start">
+        <h2>📝 Practice Exam!</h2>
+        <p class="cheer-msg">Choose your exam! 🎯</p>
+        <p style="font-size: 16px; margin: 12px 0;">First Words, then Numbers!</p>
+        <button class="exam-choice-btn words" onclick="startExam('words')">
+          📖 Words Exam
+        </button>
+        <button class="exam-choice-btn numbers" onclick="startExam('numbers')">
+          🔢 Numbers Exam
+        </button>
+      </div>
+      <div id="examQuiz" style="display: none;">
+        <div class="exam-progress" id="examProgress">Question 1 of 10</div>
+        <div class="exam-q" id="examQuestion"></div>
+        <button class="exam-listen-btn" id="examListenBtn" onclick="speakExamQuestion()">
+          <span class="icon">🔊</span> Hear question again
+        </button>
+        <div class="exam-options" id="examOptions"></div>
+      </div>
+      <div id="examResult" class="exam-result" style="display: none;">
+        <h2>🎉 You did it!</h2>
+        <div class="score" id="examScore"></div>
+        <div class="msg" id="examMsg"></div>
+        <button class="exam-start-btn" onclick="document.getElementById('examQuiz').style.display='none'; document.getElementById('examResult').style.display='none'; document.getElementById('examStart').style.display='block';">← Back to Exams</button>
+        <button class="exam-start-btn" style="margin-top: 12px; background: #74b9ff;" onclick="startExam(currentExamType)">Try Again! 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="celebration" class="celebration" style="display: none;"></div>
+
+  <script>
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 0.85;
+      u.pitch = 1.1;
+      u.lang = 'en-US';
+      window.speechSynthesis.speak(u);
+    }
+    function speakCard(el) {
+      const word = el.dataset.word || el.innerText.replace(/[^\w\s]/g, '').trim();
+      speak(word);
+      el.classList.add('speak');
+      setTimeout(() => el.classList.remove('speak'), 500);
+      showCelebration();
+    }
+    function showCelebration() {
+      const c = document.getElementById('celebration');
+      const emojis = ['⭐', '🌟', '🎉', '👍', '💫', '✨'];
+      c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      c.style.display = 'block';
+      setTimeout(() => { c.style.display = 'none'; }, 1000);
+    }
+    function speakPair(w1, w2) {
+      speak(w1 + ' and ' + w2 + ' rhyme!');
+      showCelebration();
+    }
+    function speakSentence(el) {
+      const s = el.dataset.sentence || el.innerText.replace(/[^\w\s.,!?]/g, '').trim();
+      speak(s);
+      showCelebration();
+    }
+    function checkSound(el) {
+      if (el.classList.contains('correct')) return;
+      const opts = el.parentElement.querySelectorAll('.sound-opt');
+      opts.forEach(o => o.classList.remove('correct'));
+      if (el.dataset.correct === '1') {
+        el.classList.add('correct');
+        speak('Correct! ' + el.dataset.word);
+        showCelebration();
+      } else {
+        speak('Try again!');
+        const correct = el.parentElement.querySelector('[data-correct="1"]');
+        if (correct) setTimeout(() => { correct.classList.add('correct'); speak('The answer is ' + correct.dataset.word); }, 800);
+      }
+    }
+    function speakLetter(el) {
+      const letter = el.dataset.letter;
+      const word = el.dataset.word;
+      speak(letter + ' for ' + word);
+      showCelebration();
+    }
+    function speakCount(el) {
+      const n = el.dataset.count;
+      const ans = el.querySelector('.ans');
+      const text = ans ? ans.innerText : n;
+      speak(n + '! ' + (ans ? ans.innerText.replace('= ', '') : ''));
+      showCelebration();
+    }
+    function speakBond(total, a, b) {
+      speak(total + ' equals ' + a + ' plus ' + b);
+      showCelebration();
+    }
+    function checkAdd(el, correctAns) {
+      if (el.classList.contains('correct')) return;
+      const opts = el.parentElement.querySelectorAll('.add-opt');
+      opts.forEach(o => o.classList.remove('correct'));
+      if (el.dataset.correct === '1') {
+        el.classList.add('correct');
+        speak('Correct! ' + correctAns);
+        showCelebration();
+      } else {
+        speak('Try again! The answer is ' + correctAns);
+        const correct = el.parentElement.querySelector('[data-correct="1"]');
+        if (correct) setTimeout(() => correct.classList.add('correct'), 600);
+      }
+    }
+    (function initSkipCount() {
+      const by2 = document.getElementById('skipBy2');
+      const by5 = document.getElementById('skipBy5');
+      if (by2) for (let i = 2; i <= 20; i += 2) {
+        const d = document.createElement('div');
+        d.className = 'skip-num';
+        d.textContent = i;
+        d.onclick = () => { speak(i.toString()); showCelebration(); };
+        by2.appendChild(d);
+      }
+      if (by5) for (let i = 5; i <= 25; i += 5) {
+        const d = document.createElement('div');
+        d.className = 'skip-num';
+        d.textContent = i;
+        d.onclick = () => { speak(i.toString()); showCelebration(); };
+        by5.appendChild(d);
+      }
+    })();
+    document.querySelectorAll('.cvc-card').forEach(el => {
+      el.addEventListener('click', () => {
+        const word = el.dataset.word;
+        speak(word);
+        el.style.transform = 'scale(0.95)';
+        setTimeout(() => el.style.transform = '', 150);
+        showCelebration();
+      });
+    });
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      if (id === 'exam') {
+        document.getElementById('examStart').style.display = 'block';
+        document.getElementById('examQuiz').style.display = 'none';
+        document.getElementById('examResult').style.display = 'none';
+      }
+    }
+    document.querySelectorAll('.nav-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSection(card.dataset.section);
+      });
+    });
+    const numContainer = document.getElementById('numbers51to120');
+    for (let i = 51; i <= 120; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'number-cell';
+      cell.textContent = i;
+      cell.onclick = () => { speak(i.toString()); showCelebration(); };
+      numContainer.appendChild(cell);
+    }
+
+    const numberNames = ["One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
+      "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen","Twenty",
+      "Twenty-one","Twenty-two","Twenty-three","Twenty-four","Twenty-five","Twenty-six","Twenty-seven","Twenty-eight","Twenty-nine","Thirty",
+      "Thirty-one","Thirty-two","Thirty-three","Thirty-four","Thirty-five","Thirty-six","Thirty-seven","Thirty-eight","Thirty-nine","Forty"];
+
+    const numNamesGrid = document.getElementById('numberNamesGrid');
+    for (let i = 1; i <= 40; i++) {
+      const card = document.createElement('div');
+      card.className = 'num-name-card';
+      card.innerHTML = '<span class="n">' + i + '</span>' + numberNames[i - 1];
+      card.onclick = () => { speak(numberNames[i - 1]); showCelebration(); };
+      numNamesGrid.appendChild(card);
+    }
+
+    let countdownVal = 50;
+    function nextCountdown() {
+      const el = document.getElementById('countdownNum');
+      const btn = document.getElementById('countdownBtn');
+      if (btn.textContent.includes('Again')) {
+        countdownVal = 50;
+        el.textContent = '50';
+        btn.textContent = 'Tap to count! 👇';
+        speak('Let\'s count backwards from 50!');
+        return;
+      }
+      if (countdownVal > 0) {
+        speak(countdownVal.toString());
+        el.textContent = countdownVal;
+        countdownVal--;
+        btn.textContent = countdownVal >= 0 ? 'Next! 👇' : 'Again! 🔄';
+      } else {
+        speak('Zero! Great job!');
+        el.textContent = '0 🎉';
+        btn.textContent = 'Again! 🔄';
+        showCelebration();
+      }
+    }
+
+    let babNum = 15;
+    function setBabNum(n) {
+      babNum = n;
+      document.getElementById('babCurrent').textContent = n;
+      document.getElementById('babBeforeVal').textContent = '?';
+      document.getElementById('babAfterVal').textContent = '?';
+      document.getElementById('babBetweenVal').textContent = '?';
+      document.getElementById('babBefore').classList.remove('revealed');
+      document.getElementById('babAfter').classList.remove('revealed');
+      document.getElementById('babBetween').classList.remove('revealed');
+    }
+    function revealBab(which) {
+      const before = document.getElementById('babBefore');
+      const after = document.getElementById('babAfter');
+      const between = document.getElementById('babBetween');
+      if (which === 'before') {
+        before.querySelector('.val').textContent = babNum - 1;
+        before.classList.add('revealed');
+        speak((babNum - 1).toString());
+      } else if (which === 'after') {
+        after.querySelector('.val').textContent = babNum + 1;
+        after.classList.add('revealed');
+        speak((babNum + 1).toString());
+      } else {
+        between.querySelector('.val').textContent = babNum;
+        between.classList.add('revealed');
+        speak(babNum.toString());
+      }
+      showCelebration();
+    }
+
+    function showOrder(type) {
+      const ascEl = document.getElementById('orderAsc');
+      const descEl = document.getElementById('orderDesc');
+      ascEl.innerHTML = '';
+      descEl.innerHTML = '';
+      if (type === 'asc') {
+        for (let i = 1; i <= 20; i++) {
+          const d = document.createElement('div');
+          d.className = 'order-num';
+          d.textContent = i;
+          d.onclick = () => { speak(i.toString()); showCelebration(); };
+          ascEl.appendChild(d);
+        }
+      } else {
+        for (let i = 20; i >= 1; i--) {
+          const d = document.createElement('div');
+          d.className = 'order-num';
+          d.textContent = i;
+          d.onclick = () => { speak(i.toString()); showCelebration(); };
+          descEl.appendChild(d);
+        }
+      }
+    }
+
+    const wordsExamQuestions = [
+      { q: "Which word is 'Put'?", opts: ["Get", "Put", "Cut"], correct: 1 },
+      { q: "Which word is 'Where'?", opts: ["When", "Where", "Why"], correct: 1 },
+      { q: "Which word is 'What'?", opts: ["What", "When", "Why"], correct: 0 },
+      { q: "Which word is 'Jump'?", opts: ["Run", "Jump", "Sit"], correct: 1 },
+      { q: "Which word rhymes with 'cat'?", opts: ["dog", "hat", "bed"], correct: 1 },
+      { q: "Which word rhymes with 'dog'?", opts: ["cat", "log", "sun"], correct: 1 },
+      { q: "The ball is ___ the box. Which word?", opts: ["on", "in", "under"], correct: 1 },
+      { q: "The book is ___ the table. Which word?", opts: ["in", "under", "on"], correct: 2 },
+      { q: "Which is a CVC word?", opts: ["cat", "apple", "elephant"], correct: 0 },
+      { q: "What letter does 'cat' start with?", opts: ["B", "C", "D"], correct: 1 },
+      { q: "What letter does 'dog' start with?", opts: ["C", "D", "E"], correct: 1 },
+      { q: "Which word is 'This' used for?", opts: ["far away", "close to me", "inside"], correct: 1 },
+      { q: "Complete: The cat sat on the ___", opts: ["log", "mat", "bed"], correct: 1 },
+      { q: "Which word is correct?", opts: ["Put", "Ptu", "Tup"], correct: 0 },
+      { q: "What comes first? A or B?", opts: ["B", "A", "C"], correct: 1 }
+    ];
+    const numbersExamQuestions = [
+      { q: "What is 7 written as?", opts: ["Seven", "Six", "Eight"], correct: 0 },
+      { q: "What is 10 written as?", opts: ["Ten", "Nine", "Eleven"], correct: 0 },
+      { q: "What is 15 written as?", opts: ["Fourteen", "Fifteen", "Sixteen"], correct: 1 },
+      { q: "What is 20 written as?", opts: ["Nineteen", "Twenty", "Twenty-one"], correct: 1 },
+      { q: "What comes AFTER 25?", opts: ["24", "25", "26"], correct: 2 },
+      { q: "What comes BEFORE 15?", opts: ["14", "16", "15"], correct: 0 },
+      { q: "What comes BETWEEN 14 and 16?", opts: ["14", "15", "16"], correct: 1 },
+      { q: "What comes BETWEEN 9 and 11?", opts: ["9", "10", "11"], correct: 1 },
+      { q: "What comes BEFORE 30?", opts: ["28", "29", "31"], correct: 1 },
+      { q: "What comes AFTER 40?", opts: ["39", "40", "41"], correct: 2 },
+      { q: "What is 3 + 2?", opts: ["4", "5", "6"], correct: 1 },
+      { q: "What is 4 + 3?", opts: ["6", "7", "8"], correct: 1 },
+      { q: "What is 2 + 5?", opts: ["6", "7", "8"], correct: 1 },
+      { q: "What is 5 + 4?", opts: ["8", "9", "10"], correct: 1 },
+      { q: "What comes AFTER 99?", opts: ["98", "99", "100"], correct: 2 }
+    ];
+    let examIdx = 0, examScore = 0, examAnswered = false, currentExamQuestions = [], currentExamType = 'words';
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+    function startExam(type) {
+      currentExamType = type || 'words';
+      const pool = currentExamType === 'words' ? wordsExamQuestions : numbersExamQuestions;
+      currentExamQuestions = shuffle(pool).slice(0, 10);
+      examIdx = 0;
+      examScore = 0;
+      document.getElementById('examStart').style.display = 'none';
+      document.getElementById('examResult').style.display = 'none';
+      document.getElementById('examQuiz').style.display = 'block';
+      showExamQuestion();
+    }
+    function speakExamQuestion() {
+      const q = currentExamQuestions[examIdx];
+      const optsText = q.opts.length === 3 ? q.opts[0] + ', ' + q.opts[1] + ', or ' + q.opts[2] : q.opts.join(', ');
+      speak(q.q + ' Your options are: ' + optsText);
+    }
+    function showExamQuestion() {
+      examAnswered = false;
+      const q = currentExamQuestions[examIdx];
+      document.getElementById('examProgress').textContent = 'Question ' + (examIdx + 1) + ' of ' + currentExamQuestions.length;
+      document.getElementById('examQuestion').textContent = q.q;
+      const optsEl = document.getElementById('examOptions');
+      optsEl.innerHTML = '';
+      q.opts.forEach((opt, i) => {
+        const btn = document.createElement('div');
+        btn.className = 'exam-opt';
+        btn.textContent = opt;
+        btn.onclick = () => selectExamAnswer(i);
+        optsEl.appendChild(btn);
+      });
+      speakExamQuestion();
+    }
+    function selectExamAnswer(i) {
+      if (examAnswered) return;
+      examAnswered = true;
+      const q = currentExamQuestions[examIdx];
+      const opts = document.querySelectorAll('.exam-opt');
+      opts.forEach(o => o.classList.add('disabled'));
+      if (i === q.correct) {
+        examScore++;
+        opts[i].classList.add('correct');
+        speak('Correct!');
+        showCelebration();
+      } else {
+        opts[i].classList.add('wrong');
+        opts[q.correct].classList.add('correct');
+        speak('The correct answer is ' + q.opts[q.correct]);
+      }
+      setTimeout(() => {
+        examIdx++;
+        if (examIdx < currentExamQuestions.length) showExamQuestion();
+        else showExamResult();
+      }, 1500);
+    }
+    function showExamResult() {
+      document.getElementById('examQuiz').style.display = 'none';
+      document.getElementById('examResult').style.display = 'block';
+      const total = currentExamQuestions.length;
+      document.getElementById('examScore').textContent = examScore + ' / ' + total;
+      let msg = examScore === total ? 'Perfect! You are a star! 🌟' :
+        examScore >= total * 0.7 ? 'Great job! Keep practicing! 👍' : 'Good try! Practice more! 💪';
+      document.getElementById('examMsg').textContent = msg;
+      speak('You got ' + examScore + ' out of ' + total + '. ' + msg);
+      showCelebration();
+    }
+  </script>
+</body>
+</html>
